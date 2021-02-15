@@ -1,0 +1,49 @@
+{
+  "authorization": {
+    "host": "users/public/v1/auth/signin",
+    "user":{
+      "email": "",
+      "password": "",
+      "user_id": "42337c0a-4c44-4be7-8b2e-cf92ac4388cc"
+    },
+    "admin": {
+      "email": "",
+      "password": ""
+    }
+  },
+  "transactions": {
+    "host": "accounts/private/v1/user/transactions",
+    "id": 499262
+  },
+  "user-profile": {
+    "host": "/settings/private/v1/config/profile/user-options"
+  },
+  "files": {
+    "host": "files/private/v1",
+    "filename": "9_10_5.csv",
+    "content_type": "text/csv"
+  },
+  "requests": {
+    "host": "accounts/private/v1"
+  },
+  "tba_request": {
+    "filename": "tba_request.json",
+    "endpoint": "tba-requests",
+    "subject": "TBA"
+  },
+  "tbu_request": {
+    "filename": "tbu_request.json",
+    "endpoint": "tbu-requests",
+    "subject": "TBU"
+  },
+  "owt_request": {
+    "filename": "owt_request.json",
+    "endpoint": "owt-requests",
+    "subject": "OWT"
+  },
+  "ca_request": {
+    "filename": "ca_request.json",
+    "endpoint": "ca-requests",
+    "subject": "CA"
+  }
+}
