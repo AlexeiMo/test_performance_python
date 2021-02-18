@@ -1,9 +1,11 @@
+import os
 from pathlib import Path
 from helpers.assertion_helper import assert_status_code
 from helpers.json_helper import read_json
 
 
-target = read_json('target.json')
+filepath = os.path.abspath("target.json")
+target = read_json(filepath)
 
 
 def get_request_by_id(session, request_id):

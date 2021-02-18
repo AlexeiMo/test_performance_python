@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  master:
+    image: locustio/locust
+    ports:
+     - "8089:8089"
+     - "5557:5557"
+    volumes:
+      - ./:/mnt/locust
+    command: -f /mnt/locust/test_locust.py --master -H https://api-loadtest-01.ebanq-qa.com
+    working_dir: /mnt/locust/
+
+  worker:
+    image: locustio/locust
+    volumes:
+      - ./:/mnt/locust
+    command: -f /mnt/locust/test_locust.py --worker --master-host master
+    working_dir: /mnt/locust/

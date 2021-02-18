@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 from locust import HttpUser, between, task, TaskSet
@@ -9,7 +10,8 @@ from helpers.json_helper import read_json
 
 urllib3.disable_warnings()
 
-target = read_json('target.json')
+filepath = os.path.abspath("target.json")
+target = read_json(filepath)
 
 
 class UserBehavior(TaskSet):
