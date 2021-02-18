@@ -40,3 +40,4 @@ class AuthorizationHelper:
                     "Cookie": f"token_signature={cookie}"
                 })
             response.success()
+            return None

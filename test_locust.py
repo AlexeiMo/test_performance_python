@@ -17,12 +17,16 @@ class UserBehavior(TaskSet):
     class UserModule(TaskSet):
 
         def on_start(self):
-            AuthorizationHelper().authorize(
+            token = AuthorizationHelper().authorize(
                 session=self.client,
                 email=target["authorization"]["user"]["email"],
                 password=target["authorization"]["user"]["password"],
                 role="user"
             )
+            if token:
+                self.client.headers.update({
+                    "Authorization": f"Bearer {token}"
+                })
 
         @task(5)
         def get_transaction(self):
@@ -90,12 +94,16 @@ class UserBehavior(TaskSet):
     class AdminModule(TaskSet):
 
         def on_start(self):
-            AuthorizationHelper().authorize(
+            token = AuthorizationHelper().authorize(
                 session=self.client,
                 email=target["authorization"]["admin"]["email"],
                 password=target["authorization"]["admin"]["password"],
                 role="admin"
             )
+            if token:
+                self.client.headers.update({
+                    "Authorization": f"Bearer {token}"
+                })
             self.client.headers.update(
                 {"Content-Type": "application/json"}
             )
