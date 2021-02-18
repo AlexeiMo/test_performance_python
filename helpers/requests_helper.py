@@ -24,12 +24,16 @@ def create_request(session, filename, user_id, endpoint):
         return rs_json
 
 
-def verify_request_details(response, request_id, request_type):
-    response_type = response['data']['request']['request']['subject']
-    response_id = response['data']['request']['request']['id']
-    if request_id != response_id:
-        response.failure(f"Invalid response id ({response_id} instead of {request_id})")
-    elif request_type != response_type:
-        response.failure(f"Invalid response type ({response_type} instead of {request_type})")
-    else:
-        response.success()
+def verify_request_details(session, request_id, request_type):
+    with session.get(f"/{target['requests']['host']}/requests/{request_id}",
+                     catch_response=True, verify=False, name="/REQUESTS/[ID]") as response:
+        assert_status_code(response)
+        rs_json = response.json()
+        response_type = rs_json['data']['request']['request']['subject']
+        response_id = rs_json['data']['request']['request']['id']
+        if request_id != response_id:
+            response.failure(f"Invalid response id ({response_id} instead of {request_id})")
+        elif request_type != response_type:
+            response.failure(f"Invalid response type ({response_type} instead of {request_type})")
+        else:
+            response.success()

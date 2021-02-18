@@ -24,7 +24,7 @@ class UserBehavior(TaskSet):
                 role="user"
             )
 
-        @task(1)
+        @task(5)
         def get_transaction(self):
             tr_id = target["transactions"]["id"]
             with self.client.get(f"/{target['transactions']['host']}/{tr_id}",
@@ -38,7 +38,7 @@ class UserBehavior(TaskSet):
                 else:
                     response.success()
 
-        @task(1)
+        @task(5)
         def get_user_profile(self):
             with self.client.get(f"/{target['user-profile']['host']}",
                                  catch_response=True,
@@ -82,7 +82,7 @@ class UserBehavior(TaskSet):
                 else:
                     response.success()
 
-        @task(1)
+        @task(3)
         def stop(self):
             self.interrupt()
 
@@ -108,8 +108,7 @@ class UserBehavior(TaskSet):
             user_id = target["authorization"]["user"]["user_id"]
             response = create_request(self.client, filename, user_id, endpoint)
             request_id = response["data"]["id"]
-            response = get_request_by_id(self.client, request_id)
-            verify_request_details(response, request_id, request_type)
+            verify_request_details(self.client, request_id, request_type)
 
         @task(1)
         def create_tbu_request(self):
@@ -119,8 +118,7 @@ class UserBehavior(TaskSet):
             user_id = target["authorization"]["user"]["user_id"]
             response = create_request(self.client, filename, user_id, endpoint)
             request_id = response["data"]["id"]
-            response = get_request_by_id(self.client, request_id)
-            verify_request_details(response, request_id, request_type)
+            verify_request_details(self.client, request_id, request_type)
 
         @task(1)
         def create_owt_request(self):
@@ -130,8 +128,7 @@ class UserBehavior(TaskSet):
             user_id = target["authorization"]["user"]["user_id"]
             response = create_request(self.client, filename, user_id, endpoint)
             request_id = response["data"]["id"]
-            response = get_request_by_id(self.client, request_id)
-            verify_request_details(response, request_id, request_type)
+            verify_request_details(self.client, request_id, request_type)
 
         @task(1)
         def create_ca_request(self):
@@ -145,8 +142,7 @@ class UserBehavior(TaskSet):
                     assert_status_code(response)
                     rs_json = response.json()
                 request_id = rs_json["data"]["id"]
-            response = get_request_by_id(self.client, request_id)
-            verify_request_details(response, request_id, request_type)
+            verify_request_details(self.client, request_id, request_type)
 
         @task(1)
         def stop(self):
