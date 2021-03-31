@@ -13,13 +13,15 @@ urllib3.disable_warnings()
 filepath = os.path.abspath("target.json")
 target = read_json(filepath)
 
+auth_helper = AuthorizationHelper()
+
 
 class UserBehavior(TaskSet):
     @task(1)
     class UserModule(TaskSet):
 
         def on_start(self):
-            token = AuthorizationHelper().authorize(
+            token = auth_helper.authorize(
                 session=self.client,
                 email=target["authorization"]["user"]["email"],
                 password=target["authorization"]["user"]["password"],
@@ -96,7 +98,7 @@ class UserBehavior(TaskSet):
     class AdminModule(TaskSet):
 
         def on_start(self):
-            token = AuthorizationHelper().authorize(
+            token = auth_helper.authorize(
                 session=self.client,
                 email=target["authorization"]["admin"]["email"],
                 password=target["authorization"]["admin"]["password"],
