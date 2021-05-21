@@ -1,0 +1,15 @@
+{
+  "page[number]": 1,
+  "page[size]": 25,
+  "include": "sender",
+  "include": "sender.user",
+  "include": "recentMessageSender",
+  "include": "recentMessageSender.user",
+  "include": "readBy",
+  "include": "readBy.user",
+  "include": "participants",
+  "include": "participants.user",
+  "include": "lastMessage",
+  "sort": "-lastMessageCreatedAt",
+  "filter[dir]": "incoming"
+}

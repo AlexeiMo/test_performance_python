@@ -3,7 +3,7 @@ from pathlib import Path
 
 from locust import HttpUser, between, task, TaskSet
 import urllib3
-from helpers.requests_helper import create_request, get_request_by_id, verify_request_details
+from helpers.requests_helper import create_request, get_request_by_id, verify_request_details, send_get_request
 from helpers.auth_helper import AuthorizationHelper
 from helpers.assertion_helper import assert_status_code
 from helpers.json_helper import read_json
@@ -17,7 +17,7 @@ auth_helper = AuthorizationHelper()
 
 
 class UserBehavior(TaskSet):
-    @task(1)
+    # @task(1)
     class UserModule(TaskSet):
 
         def on_start(self):
@@ -112,7 +112,7 @@ class UserBehavior(TaskSet):
                 {"Content-Type": "application/json"}
             )
 
-        @task(1)
+        # @task(1)
         def create_tba_request(self):
             filename = target["tba_request"]["filename"]
             endpoint = target["tba_request"]["endpoint"]
@@ -122,7 +122,7 @@ class UserBehavior(TaskSet):
             request_id = response["data"]["id"]
             verify_request_details(self.client, request_id, request_type)
 
-        @task(1)
+        # @task(1)
         def create_tbu_request(self):
             filename = target["tbu_request"]["filename"]
             endpoint = target["tbu_request"]["endpoint"]
@@ -132,7 +132,7 @@ class UserBehavior(TaskSet):
             request_id = response["data"]["id"]
             verify_request_details(self.client, request_id, request_type)
 
-        @task(1)
+        # @task(1)
         def create_owt_request(self):
             filename = target["owt_request"]["filename"]
             endpoint = target["owt_request"]["endpoint"]
@@ -142,7 +142,7 @@ class UserBehavior(TaskSet):
             request_id = response["data"]["id"]
             verify_request_details(self.client, request_id, request_type)
 
-        @task(1)
+        # @task(1)
         def create_ca_request(self):
             filename = target["ca_request"]["filename"]
             endpoint = target["ca_request"]["endpoint"]
@@ -155,6 +155,27 @@ class UserBehavior(TaskSet):
                     rs_json = response.json()
                 request_id = rs_json["data"]["id"]
             verify_request_details(self.client, request_id, request_type)
+
+        @task(1)
+        def navigate_to_incoming_messages(self):
+            filename = target["incoming_messages"]["filename"]
+            endpoint = target["incoming_messages"]["endpoint"]
+
+            send_get_request(self.client, endpoint, "/INCOMING MESSAGES", filename)
+
+        @task(1)
+        def navigate_to_newsletters(self):
+            filename = target["newsletters"]["filename"]
+            endpoint = target["newsletters"]["endpoint"]
+
+            send_get_request(self.client, endpoint, "/NEWSLETTERS", filename)
+
+        @task(1)
+        def import_user_profiles(self):
+            filename = target["user_profiles_import"]["filename"]
+            endpoint = target["user_profiles_import"]["endpoint"]
+
+            send_get_request(self.client, endpoint, "/USER PROFILES IMPORT", filename)
 
         @task(1)
         def stop(self):

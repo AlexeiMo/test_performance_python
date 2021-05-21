@@ -45,5 +45,17 @@
     "filename": "ca_request.json",
     "endpoint": "ca-requests",
     "subject": "CA"
+  },
+  "incoming_messages": {
+    "filename": "incoming_messages.json",
+    "endpoint": "/messages/private/v1/admin/messages"
+  },
+  "newsletters": {
+    "filename": "newsletters.json",
+    "endpoint": "/news/private/v1/article"
+  },
+  "user_profiles_import": {
+    "filename": "user_profiles_import.json",
+    "endpoint": "/users/private/v1/export/user-profiles"
   }
 }
