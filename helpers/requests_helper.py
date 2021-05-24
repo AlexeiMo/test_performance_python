@@ -49,3 +49,20 @@ def send_get_request(session, url, request_name, filename=None):
     with session.get(url, name=request_name, params=params, verify=False,
                      catch_response=True) as response:
         assert_status_code(response)
+
+
+def import_csv_file(session, url, request_name, filename):
+    session.headers.update({
+        "Content-Type": None
+    })
+    content_type = "text/csv"
+    file_to_open = Path("data") / filename
+    with open(file_to_open, "rb") as file:
+        files = {"file": (filename, file, content_type)}
+        with session.post(url,
+                          files=files,
+                          catch_response=True,
+                          name=request_name,
+                          verify=False) as response:
+            print(response.content)
+            assert_status_code(response)

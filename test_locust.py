@@ -3,7 +3,9 @@ from pathlib import Path
 
 from locust import HttpUser, between, task, TaskSet
 import urllib3
-from helpers.requests_helper import create_request, get_request_by_id, verify_request_details, send_get_request
+
+from helpers import csv_helper
+from helpers import requests_helper
 from helpers.auth_helper import AuthorizationHelper
 from helpers.assertion_helper import assert_status_code
 from helpers.json_helper import read_json
@@ -58,38 +60,6 @@ class UserBehavior(TaskSet):
                 else:
                     response.success()
 
-        @task(1)
-        def upload_file(self):
-            self.client.headers.update({
-                "Content-Type": None
-            })
-            filename = target["files"]["filename"]
-            user_id = target["authorization"]["user"]["user_id"]
-            content_type = target["files"]["content_type"]
-            file_to_open = Path("data") / filename
-            with open(file_to_open, "rb") as file:
-                files = {"file": (filename, file, content_type)}
-                with self.client.post(f"/{target['files']['host']}/files/private/{user_id}",
-                                      files=files,
-                                      catch_response=True,
-                                      name="/UPLOAD FILE",
-                                      verify=False) as response:
-                    assert_status_code(response)
-                    rs_json = response.json()
-                    file_id = rs_json["data"]["id"]
-            with self.client.get(f"/{target['files']['host']}/users/{user_id}",
-                                 catch_response=True,
-                                 name="/ALL FILES",
-                                 verify=False
-                                 ) as response:
-                assert_status_code(response)
-                rs_json = response.json()
-                id_list = [item["id"] for item in rs_json["data"]["items"]]
-                if file_id not in id_list:
-                    response.failure("File not found")
-                else:
-                    response.success()
-
         @task(3)
         def stop(self):
             self.interrupt()
@@ -118,9 +88,9 @@ class UserBehavior(TaskSet):
             endpoint = target["tba_request"]["endpoint"]
             request_type = target["tba_request"]["subject"]
             user_id = target["authorization"]["user"]["user_id"]
-            response = create_request(self.client, filename, user_id, endpoint)
+            response = requests_helper.create_request(self.client, filename, user_id, endpoint)
             request_id = response["data"]["id"]
-            verify_request_details(self.client, request_id, request_type)
+            requests_helper.verify_request_details(self.client, request_id, request_type)
 
         # @task(1)
         def create_tbu_request(self):
@@ -128,9 +98,9 @@ class UserBehavior(TaskSet):
             endpoint = target["tbu_request"]["endpoint"]
             request_type = target["tbu_request"]["subject"]
             user_id = target["authorization"]["user"]["user_id"]
-            response = create_request(self.client, filename, user_id, endpoint)
+            response = requests_helper.create_request(self.client, filename, user_id, endpoint)
             request_id = response["data"]["id"]
-            verify_request_details(self.client, request_id, request_type)
+            requests_helper.verify_request_details(self.client, request_id, request_type)
 
         # @task(1)
         def create_owt_request(self):
@@ -138,9 +108,9 @@ class UserBehavior(TaskSet):
             endpoint = target["owt_request"]["endpoint"]
             request_type = target["owt_request"]["subject"]
             user_id = target["authorization"]["user"]["user_id"]
-            response = create_request(self.client, filename, user_id, endpoint)
+            response = requests_helper.create_request(self.client, filename, user_id, endpoint)
             request_id = response["data"]["id"]
-            verify_request_details(self.client, request_id, request_type)
+            requests_helper.verify_request_details(self.client, request_id, request_type)
 
         # @task(1)
         def create_ca_request(self):
@@ -154,28 +124,48 @@ class UserBehavior(TaskSet):
                     assert_status_code(response)
                     rs_json = response.json()
                 request_id = rs_json["data"]["id"]
-            verify_request_details(self.client, request_id, request_type)
+            requests_helper.verify_request_details(self.client, request_id, request_type)
 
         @task(1)
         def navigate_to_incoming_messages(self):
             filename = target["incoming_messages"]["filename"]
             endpoint = target["incoming_messages"]["endpoint"]
 
-            send_get_request(self.client, endpoint, "/INCOMING MESSAGES", filename)
+            requests_helper.send_get_request(self.client, endpoint, "/INCOMING MESSAGES", filename)
 
         @task(1)
         def navigate_to_newsletters(self):
             filename = target["newsletters"]["filename"]
             endpoint = target["newsletters"]["endpoint"]
 
-            send_get_request(self.client, endpoint, "/NEWSLETTERS", filename)
+            requests_helper.send_get_request(self.client, endpoint, "/NEWSLETTERS", filename)
 
         @task(1)
-        def import_user_profiles(self):
-            filename = target["user_profiles_import"]["filename"]
-            endpoint = target["user_profiles_import"]["endpoint"]
+        def import_user_profiles_with_100_users(self):
+            filename1 = target["user_profiles_import_100"]["filename1"]
+            filename2 = target["user_profiles_import_100"]["filename2"]
+            endpoint = target["user_profiles_import_100"]["endpoint"]
 
-            send_get_request(self.client, endpoint, "/USER PROFILES IMPORT", filename)
+            csv_helper.create_new_import_users_file(filename1)
+
+            requests_helper.import_csv_file(self.client, endpoint, "/USER PROFILES IMPORT 100", filename2)
+
+        # @task(1)
+        def import_user_profiles_with_500_users(self):
+            filename1 = target["user_profiles_import_500"]["filename1"]
+            filename2 = target["user_profiles_import_500"]["filename2"]
+            endpoint = target["user_profiles_import_500"]["endpoint"]
+
+            csv_helper.create_new_import_users_file(filename1)
+
+            requests_helper.import_csv_file(self.client, endpoint, "/USER PROFILES IMPORT 500", filename2)
+
+        @task(1)
+        def import_transactions(self):
+            filename = target["transactions_import"]["filename"]
+            endpoint = target["transactions_import"]["endpoint"]
+
+            requests_helper.import_csv_file(self.client, endpoint, "/TRANSACTIONS IMPORT 100", filename)
 
         @task(1)
         def stop(self):

@@ -54,8 +54,18 @@
     "filename": "newsletters.json",
     "endpoint": "/news/private/v1/article"
   },
-  "user_profiles_import": {
-    "filename": "user_profiles_import.json",
-    "endpoint": "/users/private/v1/export/user-profiles"
+  "user_profiles_import_100": {
+    "filename1": "import_users_100",
+    "filename2": "import_users_100_mod.csv",
+    "endpoint": "/users/private/v1/import/user-profiles"
+  },
+  "user_profiles_import_500": {
+    "filename1": "import_users_500",
+    "filename2": "import_users_500_mod.csv",
+    "endpoint": "/users/private/v1/import/user-profiles"
+  },
+  "transactions_import": {
+    "filename": "import_transactions_100.csv",
+    "endpoint": "/accounts/private/v1/admin/requests/csv/import"
   }
 }
