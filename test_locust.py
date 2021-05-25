@@ -33,8 +33,21 @@ class UserBehavior(TaskSet):
                 self.client.headers.update({
                     "Authorization": f"Bearer {token}"
                 })
+            self.client.headers.update(
+                {"Content-Type": "application/json"}
+            )
 
-        @task(5)
+        # @task(1)
+        def create_tba_request(self):
+            filename = target["user_tba_request"]["filename"]
+            tan_filename = target["user_tba_request"]["tan_filename"]
+            endpoint = target["user_tba_request"]["endpoint"]
+
+            csv_helper.change_tan(self.client, filename, tan_filename)
+
+            requests_helper.send_post_request(self.client, endpoint, "/USER TBA REQUEST", filename)
+
+        # @task(5)
         def get_transaction(self):
             tr_id = target["transactions"]["id"]
             with self.client.get(f"/{target['transactions']['host']}/{tr_id}",
@@ -48,7 +61,7 @@ class UserBehavior(TaskSet):
                 else:
                     response.success()
 
-        @task(5)
+        # @task(5)
         def get_user_profile(self):
             with self.client.get(f"/{target['user-profile']['host']}",
                                  catch_response=True,
@@ -133,39 +146,45 @@ class UserBehavior(TaskSet):
 
             requests_helper.send_get_request(self.client, endpoint, "/INCOMING MESSAGES", filename)
 
-        @task(1)
+        # @task(1)
         def navigate_to_newsletters(self):
             filename = target["newsletters"]["filename"]
             endpoint = target["newsletters"]["endpoint"]
 
             requests_helper.send_get_request(self.client, endpoint, "/NEWSLETTERS", filename)
 
-        @task(1)
-        def import_user_profiles_with_100_users(self):
-            filename1 = target["user_profiles_import_100"]["filename1"]
-            filename2 = target["user_profiles_import_100"]["filename2"]
-            endpoint = target["user_profiles_import_100"]["endpoint"]
+        # @task(1)
+        def import_user_profiles(self):
+            filename1 = target["user_profiles_import"]["filename1"]
+            filename2 = target["user_profiles_import"]["filename2"]
+            endpoint = target["user_profiles_import"]["endpoint"]
 
             csv_helper.create_new_import_users_file(filename1)
 
             requests_helper.import_csv_file(self.client, endpoint, "/USER PROFILES IMPORT 100", filename2)
 
         # @task(1)
-        def import_user_profiles_with_500_users(self):
-            filename1 = target["user_profiles_import_500"]["filename1"]
-            filename2 = target["user_profiles_import_500"]["filename2"]
-            endpoint = target["user_profiles_import_500"]["endpoint"]
-
-            csv_helper.create_new_import_users_file(filename1)
-
-            requests_helper.import_csv_file(self.client, endpoint, "/USER PROFILES IMPORT 500", filename2)
-
-        @task(1)
         def import_transactions(self):
             filename = target["transactions_import"]["filename"]
             endpoint = target["transactions_import"]["endpoint"]
 
             requests_helper.import_csv_file(self.client, endpoint, "/TRANSACTIONS IMPORT 100", filename)
+
+        # @task(1)
+        def import_transfer_requests(self):
+            filename = target["get_pending_requests"]["filename"]
+            endpoint = target["get_pending_requests"]["endpoint"]
+
+            request_id = requests_helper.send_get_request(self.client, endpoint, "/TRANSFER REQUESTS", filename)["data"][0]["id"]
+            status = "Executed"
+
+            filename1 = target["transfer_requests_import"]["filename1"]
+            filename2 = target["transfer_requests_import"]["filename2"]
+            endpoint = target["transfer_requests_import"]["endpoint"]
+
+            csv_helper.create_new_import_requests_file(filename1, request_id, status)
+
+            requests_helper.import_csv_file(self.client, endpoint, "/TRANSFER REQUESTS IMPORT 500", filename2)
 
         @task(1)
         def stop(self):
@@ -173,7 +192,7 @@ class UserBehavior(TaskSet):
 
 
 class LoadTestUser(HttpUser):
-    wait_time = between(1, 2)
+    wait_time = between(0.3, 0.5)
     host = "https://api-loadtest-01.ebanq-qa.com"
 
     tasks = [UserBehavior]

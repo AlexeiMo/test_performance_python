@@ -18,11 +18,6 @@
   "user-profile": {
     "host": "/settings/private/v1/config/profile/user-options"
   },
-  "files": {
-    "host": "files/private/v1",
-    "filename": "9_10_5.csv",
-    "content_type": "text/csv"
-  },
   "requests": {
     "host": "accounts/private/v1"
   },
@@ -54,18 +49,27 @@
     "filename": "newsletters.json",
     "endpoint": "/news/private/v1/article"
   },
-  "user_profiles_import_100": {
-    "filename1": "import_users_100",
-    "filename2": "import_users_100_mod.csv",
-    "endpoint": "/users/private/v1/import/user-profiles"
-  },
-  "user_profiles_import_500": {
-    "filename1": "import_users_500",
-    "filename2": "import_users_500_mod.csv",
+  "user_profiles_import": {
+    "filename1": "import_users",
+    "filename2": "import_users_mod.csv",
     "endpoint": "/users/private/v1/import/user-profiles"
   },
   "transactions_import": {
-    "filename": "import_transactions_100.csv",
+    "filename": "import_transactions.csv",
     "endpoint": "/accounts/private/v1/admin/requests/csv/import"
+  },
+  "user_tba_request": {
+    "filename": "user_tba_request.json",
+    "tan_filename": "tans.csv",
+    "endpoint": "/accounts/private/v1/tba-requests"
+  },
+  "get_pending_requests": {
+    "filename": "get_pending_requests.json",
+    "endpoint": "/accounts/private/v1/requests"
+  },
+  "transfer_requests_import": {
+    "filename1": "import_transfer_requests",
+    "filename2": "import_transfer_requests_mod.csv",
+    "endpoint": "/accounts/private/v1/admin/requests/csv/update"
   }
 }

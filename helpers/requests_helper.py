@@ -49,6 +49,16 @@ def send_get_request(session, url, request_name, filename=None):
     with session.get(url, name=request_name, params=params, verify=False,
                      catch_response=True) as response:
         assert_status_code(response)
+        return response.json()
+
+
+def send_post_request(session, url, request_name, filename):
+    source_file = Path("data") / filename
+    with open(source_file, "rb") as data:
+        with session.post(url, name=request_name, data=data, verify=False,
+                          catch_response=True) as response:
+            assert_status_code(response)
+            return response.json()
 
 
 def import_csv_file(session, url, request_name, filename):
@@ -64,5 +74,4 @@ def import_csv_file(session, url, request_name, filename):
                           catch_response=True,
                           name=request_name,
                           verify=False) as response:
-            print(response.content)
             assert_status_code(response)
