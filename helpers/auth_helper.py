@@ -32,10 +32,10 @@ class AuthorizationHelper:
                               verify=False) as response:
                 assert_status_code(response)
                 rs_json = response.json()
-            if not rs_json["data"]["refreshToken"]:
+            if not rs_json["data"]["accessToken"]:
                 response.failure("No authorization token found in response")
             else:
-                token = rs_json["data"]["refreshToken"]
+                token = rs_json["data"]["accessToken"]
                 self.tokens[role] = token
                 cookie = response.cookies.get("token_signature")
                 session.headers.update({

@@ -139,7 +139,7 @@ class UserBehavior(TaskSet):
                 request_id = rs_json["data"]["id"]
             requests_helper.verify_request_details(self.client, request_id, request_type)
 
-        @task(1)
+        # @task(1)
         def navigate_to_incoming_messages(self):
             filename = target["incoming_messages"]["filename"]
             endpoint = target["incoming_messages"]["endpoint"]
@@ -163,7 +163,7 @@ class UserBehavior(TaskSet):
 
             requests_helper.import_csv_file(self.client, endpoint, "/USER PROFILES IMPORT 100", filename2)
 
-        # @task(1)
+        @task(1)
         def import_transactions(self):
             filename = target["transactions_import"]["filename"]
             endpoint = target["transactions_import"]["endpoint"]
@@ -184,15 +184,15 @@ class UserBehavior(TaskSet):
 
             csv_helper.create_new_import_requests_file(filename1, request_id, status)
 
-            requests_helper.import_csv_file(self.client, endpoint, "/TRANSFER REQUESTS IMPORT 500", filename2)
+            requests_helper.import_csv_file(self.client, endpoint, "/TRANSFER REQUESTS IMPORT 100", filename2)
 
-        @task(1)
+        # @task(1)
         def stop(self):
             self.interrupt()
 
 
 class LoadTestUser(HttpUser):
-    wait_time = between(0.3, 0.5)
+    wait_time = between(1, 2)
     host = "https://api-loadtest-01.ebanq-qa.com"
 
     tasks = [UserBehavior]
