@@ -163,7 +163,7 @@ class UserBehavior(TaskSet):
 
             requests_helper.import_csv_file(self.client, endpoint, "/USER PROFILES IMPORT 100", filename2)
 
-        @task(1)
+        # @task(1)
         def import_transactions(self):
             filename = target["transactions_import"]["filename"]
             endpoint = target["transactions_import"]["endpoint"]
@@ -192,7 +192,7 @@ class UserBehavior(TaskSet):
 
 
 class LoadTestUser(HttpUser):
-    wait_time = between(1, 2)
+    wait_time = between(0.3, 0.5)
     host = "https://api-loadtest-01.ebanq-qa.com"
 
     tasks = [UserBehavior]
