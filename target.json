@@ -70,6 +70,15 @@
   "transfer_requests_import": {
     "filename1": "import_transfer_requests",
     "filename2": "import_transfer_requests_mod.csv",
-    "endpoint": "/accounts/private/v1/admin/requests/csv/update"
+    "endpoint": "/accounts/private/v1/admin/requests/csv/update/async"
+  },
+  "export_transfer_requests": {
+    "endpoint": "/accounts/private/v1/admin/export/transfer-requests/async"
+  },
+  "export_accounts": {
+    "endpoint": "/accounts/private/v1/admin/export/accounts/async"
+  },
+  "export_cards": {
+    "endpoint": "/accounts/private/v1/admin/export/cards/async"
   }
 }

@@ -163,7 +163,7 @@ class UserBehavior(TaskSet):
 
             requests_helper.import_csv_file(self.client, endpoint, "/USER PROFILES IMPORT 100", filename2)
 
-        # @task(1)
+        @task(1)
         def import_transactions(self):
             filename = target["transactions_import"]["filename"]
             endpoint = target["transactions_import"]["endpoint"]
@@ -185,6 +185,21 @@ class UserBehavior(TaskSet):
             csv_helper.create_new_import_requests_file(filename1, request_id, status)
 
             requests_helper.import_csv_file(self.client, endpoint, "/TRANSFER REQUESTS IMPORT 100", filename2)
+
+        @task(1)
+        def export_transfer_requests(self):
+            endpoint = target["export_transfer_requests"]["endpoint"]
+            requests_helper.send_get_request(self.client, endpoint, "/TRANSFER REQ EXPORT")
+
+        @task(1)
+        def export_accounts(self):
+            endpoint = target["export_accounts"]["endpoint"]
+            requests_helper.send_get_request(self.client, endpoint, "/ACCOUNTS EXPORT")
+
+        @task(1)
+        def export_cards(self):
+            endpoint = target["export_cards"]["endpoint"]
+            requests_helper.send_get_request(self.client, endpoint, "/CARDS EXPORT")
 
         # @task(1)
         def stop(self):
