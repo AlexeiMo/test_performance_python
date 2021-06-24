@@ -19,6 +19,7 @@ auth_helper = AuthorizationHelper()
 
 
 class UserBehavior(TaskSet):
+
     # @task(1)
     class UserModule(TaskSet):
 
@@ -37,7 +38,7 @@ class UserBehavior(TaskSet):
                 {"Content-Type": "application/json"}
             )
 
-        # @task(1)
+        @task(1)
         def create_tba_request(self):
             filename = target["user_tba_request"]["filename"]
             tan_filename = target["user_tba_request"]["tan_filename"]
@@ -73,7 +74,7 @@ class UserBehavior(TaskSet):
                 else:
                     response.success()
 
-        @task(3)
+        # @task(3)
         def stop(self):
             self.interrupt()
 
@@ -163,14 +164,14 @@ class UserBehavior(TaskSet):
 
             requests_helper.import_csv_file(self.client, endpoint, "/USER PROFILES IMPORT 100", filename2)
 
-        @task(1)
+        # @task(1)
         def import_transactions(self):
             filename = target["transactions_import"]["filename"]
             endpoint = target["transactions_import"]["endpoint"]
 
-            requests_helper.import_csv_file(self.client, endpoint, "/TRANSACTIONS IMPORT 100", filename)
+            requests_helper.import_csv_file(self.client, endpoint, "/TRANSACTIONS IMPORT 1000", filename)
 
-        # @task(1)
+        @task(1)
         def import_transfer_requests(self):
             filename = target["get_pending_requests"]["filename"]
             endpoint = target["get_pending_requests"]["endpoint"]
@@ -186,20 +187,70 @@ class UserBehavior(TaskSet):
 
             requests_helper.import_csv_file(self.client, endpoint, "/TRANSFER REQUESTS IMPORT 100", filename2)
 
-        @task(1)
+        # @task(1)
         def export_transfer_requests(self):
             endpoint = target["export_transfer_requests"]["endpoint"]
             requests_helper.send_get_request(self.client, endpoint, "/TRANSFER REQ EXPORT")
 
-        @task(1)
+        # @task(1)
         def export_accounts(self):
             endpoint = target["export_accounts"]["endpoint"]
             requests_helper.send_get_request(self.client, endpoint, "/ACCOUNTS EXPORT")
 
-        @task(1)
+        # @task(1)
         def export_cards(self):
             endpoint = target["export_cards"]["endpoint"]
             requests_helper.send_get_request(self.client, endpoint, "/CARDS EXPORT")
+
+        # @task(1)
+        def export_scheduled_transactions(self):
+            endpoint = target["export_scheduled_transactions"]["endpoint"]
+            requests_helper.send_get_request(self.client, endpoint, "/SHED TRANSACTIONS EXPORT")
+
+        # @task(1)
+        def export_transactions_log(self):
+            endpoint = target["export_transactions_log"]["endpoint"]
+            requests_helper.send_get_request(self.client, endpoint, "/TRANSACTIONS LOG EXPORT")
+
+        # @task(1)
+        def export_information_log(self):
+            endpoint = target["export_information_log"]["endpoint"]
+            requests_helper.send_get_request(self.client, endpoint, "/INFORMATION LOG EXPORT")
+
+        # @task(1)
+        def export_system_transaction(self):
+            endpoint = target["export_system_transaction"]["endpoint"]
+            requests_helper.send_get_request(self.client, endpoint, "/SYS TRANSACTION EXPORT")
+
+        # @task(1)
+        def export_system_manual_transaction(self):
+            endpoint = target["export_system_manual_transaction"]["endpoint"]
+            requests_helper.send_get_request(self.client, endpoint, "/SYS MANUAL TRANSACTION EXPORT")
+
+        # @task(1)
+        def export_system_access(self):
+            endpoint = target["export_system_access"]["endpoint"]
+            requests_helper.send_get_request(self.client, endpoint, "/SYS ACCESS EXPORT")
+
+        # @task(1)
+        def export_system_overview(self):
+            endpoint = target["export_system_overview"]["endpoint"]
+            requests_helper.send_get_request(self.client, endpoint, "/SYS OVERVIEW EXPORT")
+
+        # @task(1)
+        def export_user_profiles(self):
+            endpoint = target["export_user_profiles"]["endpoint"]
+            requests_helper.send_get_request(self.client, endpoint, "/USER PROFILES EXPORT")
+
+        # @task(1)
+        def export_admin_profiles(self):
+            endpoint = target["export_admin_profiles"]["endpoint"]
+            requests_helper.send_get_request(self.client, endpoint, "/ADMIN PROFILES EXPORT")
+
+        # @task(1)
+        def export_registration_requests(self):
+            endpoint = target["export_registration_requests"]["endpoint"]
+            requests_helper.send_get_request(self.client, endpoint, "/REGISTRATION REQUESTS EXPORT")
 
         # @task(1)
         def stop(self):

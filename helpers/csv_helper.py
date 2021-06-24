@@ -7,7 +7,9 @@ from helpers.json_helper import read_json, write_json
 
 
 def create_new_import_users_file(filename):
-    df = pandas.read_csv(f'data\\{filename}.csv')
+    filename = Path("data") / filename
+
+    df = pandas.read_csv(f'{filename}.csv')
 
     for i in range(0, len(df.index)):
         username = ""
@@ -36,11 +38,13 @@ def create_new_import_users_file(filename):
 
     df = df.replace(np.nan, '', regex=True)
 
-    df.to_csv(f'data\\{filename}_mod.csv', index=False, na_rep='NaN')
+    df.to_csv(f'{filename}_mod.csv', index=False, na_rep='NaN')
 
 
 def create_new_import_requests_file(filename, request_id, status):
-    df = pandas.read_csv(f'data\\{filename}.csv')
+    filename = Path('data') / filename
+
+    df = pandas.read_csv(f'{filename}.csv')
 
     for i in range(0, len(df.index)):
 
@@ -49,7 +53,7 @@ def create_new_import_requests_file(filename, request_id, status):
 
     df = df.rename(columns={"Request ID": request_id, "Status": status})
 
-    df.to_csv(f'data\\{filename}_mod.csv', index=False)
+    df.to_csv(f'{filename}_mod.csv', index=False)
 
 
 def change_tan(session, source_filename, tan_filename):
@@ -63,7 +67,9 @@ def change_tan(session, source_filename, tan_filename):
 
     df = df.iloc[0:len(df.index) - 1]
 
-    df.to_csv(f'data\\{tan_filename}', index=False)
+    tan_filename = Path("data") / tan_filename
+
+    df.to_csv(f'{tan_filename}', index=False)
 
     data["tanValue"] = tan_value
 

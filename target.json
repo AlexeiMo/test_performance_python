@@ -56,7 +56,7 @@
   },
   "transactions_import": {
     "filename": "import_transactions.csv",
-    "endpoint": "/accounts/private/v1/admin/requests/csv/import"
+    "endpoint": "/accounts/private/v1/admin/requests/csv/import/async"
   },
   "user_tba_request": {
     "filename": "user_tba_request.json",
@@ -80,5 +80,35 @@
   },
   "export_cards": {
     "endpoint": "/accounts/private/v1/admin/export/cards/async"
+  },
+  "export_scheduled_transactions": {
+    "endpoint": "/accounts/private/v1/admin/export/scheduled-transactions/async"
+  },
+  "export_transactions_log": {
+    "endpoint": "/logs/private/v1/admin/export/transactions-log/async"
+  },
+  "export_information_log": {
+    "endpoint": "/logs/private/v1/admin/export/information-log/async"
+  },
+  "export_system_transaction": {
+    "endpoint": "/reports/private/v1/admin/system/transaction/export/async"
+  },
+  "export_system_manual_transaction": {
+    "endpoint": "/reports/private/v1/admin/system/manual-transaction/export/async"
+  },
+  "export_system_access": {
+    "endpoint": "/reports/private/v1/admin/system/access/export/async"
+  },
+  "export_system_overview": {
+    "endpoint": "/reports/private/v1/admin/system/overview/export/async"
+  },
+  "export_user_profiles": {
+    "endpoint": "/users/private/v1/export/user-profiles/async"
+  },
+  "export_admin_profiles": {
+    "endpoint": "/users/private/v1/export/admin-profiles/async"
+  },
+  "export_registration_requests": {
+    "endpoint": "/users/private/v1/export/registration-requests/async"
   }
 }
