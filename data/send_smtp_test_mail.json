@@ -1,0 +1,36 @@
+{
+  "data": [
+    {
+      "name": "email_from",
+      "value": "testemail@ebanq-qa.com"
+    },
+    {
+      "name": "smtp_username",
+      "value": "65b04d256042b6"
+    },
+    {
+      "name": "smtp_password",
+      "value": "4d795898ebcb27"
+    },
+    {
+      "name": "smtp_protocol",
+      "value": "tls"
+    },
+    {
+      "name": "smtp_port",
+      "value": "587"
+    },
+    {
+      "name": "smtp_host",
+      "value": "smtp.mailtrap.io"
+    },
+    {
+      "name": "smtp_status",
+      "value": "enabled"
+    },
+    {
+      "name": "test_email",
+      "value": "test@test.com"
+    }
+  ]
+}

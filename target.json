@@ -110,5 +110,9 @@
   },
   "export_registration_requests": {
     "endpoint": "/users/private/v1/export/registration-requests/async"
+  },
+  "send_smtp_test_mail": {
+    "filename": "send_smtp_test_mail.json",
+    "endpoint": "/notifications/private/v1/test/smtp"
   }
 }

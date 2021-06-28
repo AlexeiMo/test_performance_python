@@ -171,7 +171,7 @@ class UserBehavior(TaskSet):
 
             requests_helper.import_csv_file(self.client, endpoint, "/TRANSACTIONS IMPORT 1000", filename)
 
-        @task(1)
+        # @task(1)
         def import_transfer_requests(self):
             filename = target["get_pending_requests"]["filename"]
             endpoint = target["get_pending_requests"]["endpoint"]
@@ -251,6 +251,12 @@ class UserBehavior(TaskSet):
         def export_registration_requests(self):
             endpoint = target["export_registration_requests"]["endpoint"]
             requests_helper.send_get_request(self.client, endpoint, "/REGISTRATION REQUESTS EXPORT")
+
+        @task(1)
+        def send_smtp_test_message(self):
+            filename = target["send_smtp_test_mail"]["filename"]
+            endpoint = target["send_smtp_test_mail"]["endpoint"]
+            requests_helper.send_post_request(self.client, endpoint, "/TEST SMTP MAIL", filename, 204)
 
         # @task(1)
         def stop(self):
