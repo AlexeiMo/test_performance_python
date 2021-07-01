@@ -1,6 +1,6 @@
 {
   "authorization": {
-    "host": "users/public/v1/auth/signin",
+    "host": "/users/public/v1/auth/signin",
     "user":{
       "email": "",
       "password": "",
@@ -52,7 +52,7 @@
   "user_profiles_import": {
     "filename1": "import_users",
     "filename2": "import_users_mod.csv",
-    "endpoint": "/users/private/v1/import/user-profiles"
+    "endpoint": "/users/private/v1/import/user-profiles/async"
   },
   "transactions_import": {
     "filename": "import_transactions.csv",

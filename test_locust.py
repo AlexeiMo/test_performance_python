@@ -252,7 +252,7 @@ class UserBehavior(TaskSet):
             endpoint = target["export_registration_requests"]["endpoint"]
             requests_helper.send_get_request(self.client, endpoint, "/REGISTRATION REQUESTS EXPORT")
 
-        @task(1)
+        # @task(1)
         def send_smtp_test_message(self):
             filename = target["send_smtp_test_mail"]["filename"]
             endpoint = target["send_smtp_test_mail"]["endpoint"]

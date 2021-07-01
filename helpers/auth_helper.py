@@ -21,11 +21,11 @@ class AuthorizationHelper:
 
             data = {
                 "data": {
-                    "email": f"{email}",
-                    "password": f"{password}"
+                    "email": email,
+                    "password": password
                 }
             }
-            with session.post(f"/{target['authorization']['host']}",
+            with session.post(target['authorization']['host'],
                               data=json.dumps(data),
                               name="/SIGN IN",
                               catch_response=True,
